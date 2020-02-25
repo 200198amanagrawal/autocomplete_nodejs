@@ -197,4 +197,60 @@ router.post('/update/', function(req, res, next) {//just a simple insert data fr
   });
 });
 
+router.get('/autocomplete/', function(req, res, next) {
+
+  var regex= new RegExp(req.query["term"],'i');//regex which checks whether the given one letter is present at any location.
+ 
+  var employeeFilter =empModel.find({name:regex},{'name':1}).sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
+  employeeFilter.exec(function(err,data){
+
+
+var result=[];
+if(!err){
+   if(data && data.length && data.length>0){
+     data.forEach(user=>{
+       let obj={
+         id:user._id,
+         label: user.name
+       };
+       result.push(obj);
+     });
+
+   }
+ 
+   res.jsonp(result);
+}
+
+  });
+
+});
+
+router.get('/autocompleteEmail/', function(req, res, next) {
+
+  var regex= new RegExp(req.query["term"],'i');//regex which checks whether the given one letter is present at any location.
+ //giving the email label below
+  var employeeFilter =empModel.find({email:regex},{'email':1}).sort({"updated_at":-1}).sort({"created_at":-1}).limit(20);
+  employeeFilter.exec(function(err,data){
+
+
+var result=[];
+if(!err){
+   if(data && data.length && data.length>0){
+     data.forEach(user=>{
+       let obj={
+         id:user._id,
+         label: user.email//giving the label
+       };
+       result.push(obj);
+     });
+
+   }
+ 
+   res.jsonp(result);
+}
+
+  });
+
+});
+
 module.exports = router;

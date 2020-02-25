@@ -2,12 +2,14 @@
 <html>
   <head>
     <title><%=title %></title>
-      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-      <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>  
     
   </head>
   <body>
@@ -34,7 +36,7 @@
         <div class="form-group">
             <label for="email" class="col-md-12 control-label">By Email</label>
             <div class="col-md-12">
-                <input type="text" class="form-control" name="fltremail" placeholder="Enter Email">
+                <input type="text" id="searchEmail" class="form-control" name="fltremail" placeholder="Enter Email">
             </div>
         </div>
      </div>
@@ -156,6 +158,63 @@
                           
                       </form>
                    </div>
-              </div>          
+              </div> 
+              <script>
+                $(function(){
+              $('#searchName').autocomplete({
+              source: function(req,res){
+                $.ajax({
+                  url:"autocomplete/",
+                  dataType:"jsonp",
+                  type:"GET",
+                  data:req,
+                  success: function(data){
+                    res(data)
+                  },
+                  error: function(err){
+                    console.log(err.status);
+                  }
+                });
+              },
+              //below lines are not that imp just written if any error arouses.
+              minLength:1,
+              select: function(event,ui){
+                if(ui.item){
+                  $('#searchName').val(ui.item.label);
+                }
+              }
+              });
+                });
+                </script>
+                <script>
+                  $(function(){
+                $('#searchEmail').autocomplete({
+                source: function(req,res){
+                  $.ajax({
+                    url:"autocompleteEmail/",
+                    dataType:"jsonp",
+                    type:"GET",
+                    data:req,
+                    success: function(data){
+                      res(data)
+                    },
+                    error: function(err){
+                      console.log(err.status);
+                    }
+                  });
+                },
+                //below lines are not that imp just written if any error arouses.
+                minLength:1,
+                select: function(event,ui){
+                  if(ui.item){
+                    $('#searchEmail').val(ui.item.label);
+                  }
+                }
+                });
+                  });
+                  </script>      
+              </div>
+              </div>
+              </div>       
   </body>
 </html>
